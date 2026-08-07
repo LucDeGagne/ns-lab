@@ -44,3 +44,17 @@ def derivative_y(field: np.ndarray, grid: Grid2D) -> np.ndarray:
     derivative_hat = 1j * ky * field_hat
 
     return np.fft.ifft2(derivative_hat).real
+
+def laplacian(field: np.ndarray, grid: Grid2D) -> np.ndarray:
+    """Compute the Laplacian of a scalar periodic field.
+
+    Uses the Fourier-space identity:
+
+        Δf  <-->  -k^2 * f_hat
+    """
+    _validate_scalar_field(field, grid)
+
+    field_hat = np.fft.fft2(field)
+    laplacian_hat = -grid.wave_number_squared * field_hat
+
+    return np.fft.ifft2(laplacian_hat).real

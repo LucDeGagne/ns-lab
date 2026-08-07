@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from ns_lab.grids import Grid2D
-from ns_lab.spectral import derivative_x, derivative_y
+from ns_lab.spectral import derivative_x, derivative_y, laplacian
 
 
 def test_derivative_x_of_sine_wave() -> None:
@@ -32,3 +32,22 @@ def test_derivatives_reject_wrong_shape() -> None:
 
     with pytest.raises(ValueError, match="field shape must be"):
         derivative_y(field, grid)
+
+
+def test_laplacian_of_sine_cosine_field() -> None:
+    grid = Grid2D(nx=32, ny=32)
+    x, y = grid.mesh
+
+    field = np.sin(x) + np.cos(2.0 * y)
+
+    expected = -np.sin(x) - 4.0 * np.cos(2.0 * y)
+
+    np.testing.assert_allclose(laplacian(field, grid), expected, atol=1e-12)
+
+
+def test_laplacian_rejects_wrong_shape() -> None:
+    grid = Grid2D(nx=32, ny=32)
+    field = np.zeros((16, 16))
+
+    with pytest.raises(ValueError, match="field shape must be"):
+        laplacian(field, grid)
