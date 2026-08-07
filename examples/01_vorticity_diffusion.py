@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 import numpy as np
+from time import perf_counter
 
 from ns_lab.diagnostics import energy, enstrophy
 from ns_lab.grids import Grid2D
@@ -27,11 +28,22 @@ def main() -> None:
     omega = np.sin(x)
     initial_omega = omega.copy()
 
+    start = perf_counter()
+
     for _ in range(steps):
         omega = euler_step(omega, grid, viscosity=viscosity, dt=dt)
 
+    elapsed = perf_counter() - start
+
     u_initial, v_initial = velocity_from_vorticity(initial_omega, grid)
     u_final, v_final = velocity_from_vorticity(omega, grid)
+
+    print("Run summary")
+    print(f"  Steps:            {steps}")
+    print(f"  Simulated time:   {steps * dt:.6f}")
+    print(f"  Runtime:          {elapsed:.3f} seconds")
+    print(f"  Steps per second: {steps / elapsed:.1f}")
+    print()
 
     print("Initial diagnostics")
     print(f"  Energy:    {energy(u_initial, v_initial, grid):.8f}")
