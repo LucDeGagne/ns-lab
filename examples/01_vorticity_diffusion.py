@@ -7,12 +7,13 @@ vorticity should slowly decay rather than swirl into complicated structures.
 
 from __future__ import annotations
 
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 from time import perf_counter
 
 from ns_lab.diagnostics import energy, enstrophy
 from ns_lab.grids import Grid2D
+from ns_lab.plotting import plot_vorticity_comparison
 from ns_lab.solvers.vorticity2d import euler_step
 from ns_lab.vorticity import velocity_from_vorticity
 
@@ -53,28 +54,7 @@ def main() -> None:
     print(f"  Energy:    {energy(u_final, v_final, grid):.8f}")
     print(f"  Enstrophy: {enstrophy(omega, grid):.8f}")
 
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)
-
-    initial_plot = axes[0].imshow(
-        initial_omega.T,
-        origin="lower",
-        extent=(0.0, grid.length_x, 0.0, grid.length_y),
-    )
-    axes[0].set_title("Initial vorticity")
-    axes[0].set_xlabel("x")
-    axes[0].set_ylabel("y")
-    fig.colorbar(initial_plot, ax=axes[0])
-
-    final_plot = axes[1].imshow(
-        omega.T,
-        origin="lower",
-        extent=(0.0, grid.length_x, 0.0, grid.length_y),
-    )
-    axes[1].set_title("Final vorticity")
-    axes[1].set_xlabel("x")
-    axes[1].set_ylabel("y")
-    fig.colorbar(final_plot, ax=axes[1])
-
+    plot_vorticity_comparison(initial_omega, omega, grid)
     plt.show()
 
 
