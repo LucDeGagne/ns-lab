@@ -31,3 +31,23 @@ def vorticity_rhs(omega: np.ndarray, grid: Grid2D, viscosity: float) -> np.ndarr
     diffusion = viscosity * laplacian(omega, grid)
 
     return -advection + diffusion
+
+def euler_step(
+    omega: np.ndarray,
+    grid: Grid2D,
+    viscosity: float,
+    dt: float,
+) -> np.ndarray:
+    """Advance vorticity by one explicit Euler timestep.
+
+    Uses:
+
+        ω_next = ω_current + dt * dω/dt
+
+    where dω/dt is computed by vorticity_rhs.
+    """
+    if dt <= 0.0:
+        msg = "dt must be positive."
+        raise ValueError(msg)
+
+    return omega + dt * vorticity_rhs(omega, grid, viscosity)
