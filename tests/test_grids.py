@@ -33,3 +33,28 @@ def test_grid2d_rejects_invalid_sizes() -> None:
 
     with pytest.raises(ValueError, match="ny must be positive"):
         Grid2D(nx=8, ny=0)
+
+
+def test_grid2d_wave_numbers_for_default_periodic_domain() -> None:
+    grid = Grid2D(nx=4, ny=4)
+
+    np.testing.assert_allclose(grid.wave_numbers_x, np.array([0.0, 1.0, -2.0, -1.0]))
+    np.testing.assert_allclose(grid.wave_numbers_y, np.array([0.0, 1.0, -2.0, -1.0]))
+
+
+def test_grid2d_wave_number_mesh_has_expected_shape() -> None:
+    grid = Grid2D(nx=4, ny=8)
+
+    kx, ky = grid.wave_number_mesh
+
+    assert kx.shape == (4, 8)
+    assert ky.shape == (4, 8)
+
+
+def test_grid2d_wave_number_squared_is_nonnegative() -> None:
+    grid = Grid2D(nx=4, ny=4)
+
+    assert grid.wave_number_squared.shape == (4, 4)
+    assert np.all(grid.wave_number_squared >= 0.0)
+    assert grid.wave_number_squared[0, 0] == 0.0
+

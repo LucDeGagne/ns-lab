@@ -74,3 +74,25 @@ class Grid2D:
     def shape(self) -> tuple[int, int]:
         """Grid array shape."""
         return self.nx, self.ny
+
+    @property
+    def wave_numbers_x(self) -> np.ndarray:
+        """Angular wave numbers in the x direction."""
+        return 2.0 * np.pi * np.fft.fftfreq(self.nx, d=self.dx)
+
+    @property
+    def wave_numbers_y(self) -> np.ndarray:
+        """Angular wave numbers in the y direction."""
+        return 2.0 * np.pi * np.fft.fftfreq(self.ny, d=self.dy)
+
+    @property
+    def wave_number_mesh(self) -> tuple[np.ndarray, np.ndarray]:
+        """Two-dimensional angular wave-number arrays."""
+        return np.meshgrid(self.wave_numbers_x, self.wave_numbers_y, indexing="ij")
+
+    @property
+    def wave_number_squared(self) -> np.ndarray:
+        """Squared wave-number magnitude at each spectral grid point."""
+        kx, ky = self.wave_number_mesh
+        return kx**2 + ky**2
+
