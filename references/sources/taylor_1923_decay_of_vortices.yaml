@@ -1,0 +1,69 @@
+id: taylor_1923_decay_of_vortices
+type: historical_paper
+title: "On the decay of vortices in a viscous fluid"
+authors:
+  - "G. I. Taylor"
+year: 1923
+publication: "The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science"
+doi: "10.1080/14786442308634295"
+
+topics:
+  - navier_stokes
+  - incompressible_flow
+  - viscous_decay
+  - vortex_decay
+  - exact_solution
+  - two_dimensional_flow
+  - periodic_domain
+
+ns_lab_role:
+  - benchmark_source
+  - historical_reference
+  - exact_solution_reference
+
+implemented_in:
+  - "src/ns_lab/benchmarks/taylor_green.py"
+  - "examples/02_taylor_green_vortex.py"
+
+validated_by:
+  - "tests/test_taylor_green_benchmark.py"
+  - "tests/test_taylor_green_solver_reproduction.py"
+
+related_docs:
+  - "docs/benchmarks/001_taylor_green_vortex.md"
+
+mathematical_objects:
+  velocity:
+    - "u(x, y, t) = sin(x) cos(y) exp(-2νt)"
+    - "v(x, y, t) = -cos(x) sin(y) exp(-2νt)"
+  vorticity:
+    - "ω(x, y, t) = 2 sin(x) sin(y) exp(-2νt)"
+  diagnostics:
+    - "E(t) = π² exp(-4νt)"
+    - "Z(t) = 2π² exp(-4νt)"
+
+assumptions:
+  domain: "[0, 2π] x [0, 2π]"
+  boundary_conditions: periodic
+  dimensionality: 2D
+  incompressible: true
+  forcing: none
+  viscosity: positive
+
+convention_notes:
+  - "NS Lab uses a sign/rotation convention that is equivalent to common Taylor-Green forms."
+  - "The benchmark is used to verify viscous decay, energy decay, enstrophy decay, and numerical agreement with an exact solution."
+
+reproduction_status: reproduced
+reproduction_summary: >
+  NS Lab reproduces the 2D Taylor-Green vortex decay using the current explicit
+  Euler vorticity solver. At grid 64 x 64, viscosity 0.01, dt 0.001, and final
+  time 0.5, the numerical solution matches the exact energy, enstrophy, and
+  vorticity field with small expected timestep error.
+
+limitations:
+  - "Current reproduction uses explicit Euler timestepping, so errors are expected."
+  - "This benchmark is 2D and does not exercise 3D vortex stretching."
+  - "This is an exact-solution verification case, not a turbulence benchmark."
+
+status: active
