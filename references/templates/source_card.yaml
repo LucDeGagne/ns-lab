@@ -1,0 +1,55 @@
+id: short_stable_identifier
+type: historical_paper | benchmark_reference | survey | textbook | documentation | dataset
+title: "Source title"
+authors:
+  - "Author Name"
+year: 0000
+publication: "Publication or venue"
+doi: ""
+url: ""
+
+topics:
+  - navier_stokes
+  - incompressible_flow
+
+ns_lab_role:
+  - benchmark_source
+  - historical_reference
+  - exact_solution_reference
+  - numerical_method_reference
+  - survey_reference
+
+implemented_in:
+  - "src/ns_lab/path/to/file.py"
+
+validated_by:
+  - "tests/test_related_file.py"
+
+related_docs:
+  - "docs/path/to/note.md"
+
+mathematical_objects:
+  equations:
+    - "Equation or formula used"
+  diagnostics:
+    - "Diagnostic formula, if any"
+
+assumptions:
+  domain: ""
+  boundary_conditions: ""
+  dimensionality: ""
+  incompressible: true
+  forcing: ""
+  viscosity: ""
+
+convention_notes:
+  - "Any sign, coordinate, scaling, or notation differences."
+
+reproduction_status: not_started | in_progress | reproduced | partial | blocked
+reproduction_summary: >
+  Short summary of what NS Lab has or has not reproduced from this source.
+
+limitations:
+  - "Known limitations of our reproduction."
+
+status: active | archived | superseded
