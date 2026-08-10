@@ -33,7 +33,6 @@ def main() -> None:
     final_time = steps * dt
 
     omega = taylor_green_vorticity(grid, viscosity=viscosity, time=0.0)
-    initial_omega = omega.copy()
 
     start = perf_counter()
 
