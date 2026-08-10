@@ -132,3 +132,66 @@ def plot_vorticity_difference(
     fig.colorbar(difference_plot, ax=axes[2])
 
     return fig, (axes[0], axes[1], axes[2])
+
+def plot_vorticity_error(
+    numerical_omega: np.ndarray,
+    exact_omega: np.ndarray,
+    grid: Grid2D,
+    *,
+    numerical_title: str = "Numerical vorticity",
+    exact_title: str = "Exact vorticity",
+    error_title: str = "Numerical - exact",
+) -> tuple[Figure, tuple[Axes, Axes, Axes]]:
+    """Plot numerical, exact, and error vorticity fields.
+
+    The error panel shows:
+
+        numerical_omega - exact_omega
+    """
+    _validate_vorticity_field(numerical_omega, grid, "numerical_omega")
+    _validate_vorticity_field(exact_omega, grid, "exact_omega")
+
+    error = numerical_omega - exact_omega
+
+    vmin, vmax = _symmetric_color_limits(numerical_omega, exact_omega)
+    error_vmin, error_vmax = _symmetric_color_limits(error)
+
+    fig, axes = plt.subplots(1, 3, figsize=(14, 4), constrained_layout=True)
+
+    numerical_plot = axes[0].imshow(
+        numerical_omega.T,
+        origin="lower",
+        extent=(0.0, grid.length_x, 0.0, grid.length_y),
+        vmin=vmin,
+        vmax=vmax,
+    )
+    axes[0].set_title(numerical_title)
+    axes[0].set_xlabel("x")
+    axes[0].set_ylabel("y")
+    fig.colorbar(numerical_plot, ax=axes[0])
+
+    exact_plot = axes[1].imshow(
+        exact_omega.T,
+        origin="lower",
+        extent=(0.0, grid.length_x, 0.0, grid.length_y),
+        vmin=vmin,
+        vmax=vmax,
+    )
+    axes[1].set_title(exact_title)
+    axes[1].set_xlabel("x")
+    axes[1].set_ylabel("y")
+    fig.colorbar(exact_plot, ax=axes[1])
+
+    error_plot = axes[2].imshow(
+        error.T,
+        origin="lower",
+        extent=(0.0, grid.length_x, 0.0, grid.length_y),
+        vmin=error_vmin,
+        vmax=error_vmax,
+    )
+    axes[2].set_title(error_title)
+    axes[2].set_xlabel("x")
+    axes[2].set_ylabel("y")
+    fig.colorbar(error_plot, ax=axes[2])
+
+    return fig, (axes[0], axes[1], axes[2])

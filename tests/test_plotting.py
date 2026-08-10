@@ -62,3 +62,33 @@ def test_plot_vorticity_difference_rejects_wrong_shapes() -> None:
 
     with pytest.raises(ValueError, match="final_omega shape must be"):
         plot_vorticity_difference(valid, invalid, grid)
+
+
+def test_plot_vorticity_error_returns_figure_and_three_axes() -> None:
+    grid = Grid2D(nx=8, ny=8)
+    numerical_omega = np.zeros(grid.shape)
+    exact_omega = np.ones(grid.shape)
+
+    from ns_lab.plotting import plot_vorticity_error
+
+    fig, axes = plot_vorticity_error(numerical_omega, exact_omega, grid)
+
+    assert fig is not None
+    assert len(axes) == 3
+    assert axes[0].get_title() == "Numerical vorticity"
+    assert axes[1].get_title() == "Exact vorticity"
+    assert axes[2].get_title() == "Numerical - exact"
+
+
+def test_plot_vorticity_error_rejects_wrong_shapes() -> None:
+    grid = Grid2D(nx=8, ny=8)
+    valid = np.zeros(grid.shape)
+    invalid = np.zeros((4, 4))
+
+    from ns_lab.plotting import plot_vorticity_error
+
+    with pytest.raises(ValueError, match="numerical_omega shape must be"):
+        plot_vorticity_error(invalid, valid, grid)
+
+    with pytest.raises(ValueError, match="exact_omega shape must be"):
+        plot_vorticity_error(valid, invalid, grid)

@@ -19,7 +19,7 @@ from ns_lab.benchmarks import (
 )
 from ns_lab.diagnostics import energy, enstrophy
 from ns_lab.grids import Grid2D
-from ns_lab.plotting import plot_vorticity_difference
+from ns_lab.plotting import plot_vorticity_error
 from ns_lab.solvers.vorticity2d import euler_step
 from ns_lab.vorticity import velocity_from_vorticity
 
@@ -75,13 +75,13 @@ def main() -> None:
     print(f"  Enstrophy error:       {abs(numerical_enstrophy - exact_enstrophy):.3e}")
     print(f"  Max vorticity error:   {max_vorticity_error:.3e}")
 
-    plot_vorticity_difference(
-        initial_omega,
+    plot_vorticity_error(
         omega,
+        exact_final_omega,
         grid,
-        initial_title="Taylor-Green initial vorticity",
-        final_title="Taylor-Green numerical final vorticity",
-        difference_title="Numerical final - initial",
+        numerical_title="Taylor-Green numerical final vorticity",
+        exact_title="Taylor-Green exact final vorticity",
+        error_title="Numerical - exact",
     )
     plt.show()
 
